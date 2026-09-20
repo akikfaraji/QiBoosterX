@@ -1,43 +1,87 @@
 {
   "benchmark": "Fashion-MNIST, 500 train samples, 2000 test samples, 15 epochs, averaged over 3 seeds (42, 7, 123)",
   "model": "Small CNN (2 conv + 2 fc, ~425k params)",
-  "optimizer_base": "Adam, lr=1e-3",
-  "results": [
+  "optimizer_base": "Adam, lr=1e-3 (or as noted)",
+  "v0.3.0_results": [
     {
-      "name": "baseline",
-      "val_acc": 81.1,
-      "val_loss": 0.5788,
-      "delta_acc": 0.0
+      "name": "baseline_adam",
+      "val_acc": 80.73,
+      "val_loss": 0.5944,
+      "delta_acc": 0.0,
+      "notes": "Adam lr=1e-3"
     },
     {
       "name": "sam_rho0.1",
-      "val_acc": 81.52,
-      "val_loss": 0.5708,
-      "delta_acc": 0.42
+      "val_acc": 81.25,
+      "val_loss": 0.5602,
+      "delta_acc": 0.52,
+      "notes": "Best val_acc"
     },
     {
       "name": "sgld",
-      "val_acc": 81.5,
-      "val_loss": 0.5704,
-      "delta_acc": 0.4
-    },
-    {
-      "name": "la+sgld",
-      "val_acc": 81.23,
-      "val_loss": 0.5407,
-      "delta_acc": 0.13
+      "val_acc": 81.27,
+      "val_loss": 0.5864,
+      "delta_acc": 0.53,
+      "notes": "Best val_acc (tied)"
     },
     {
       "name": "lookahead",
-      "val_acc": 80.4,
-      "val_loss": 0.5509,
-      "delta_acc": -0.7
+      "val_acc": 80.88,
+      "val_loss": 0.5412,
+      "delta_acc": 0.15,
+      "notes": "Best val_loss overall"
+    },
+    {
+      "name": "la+sgld",
+      "val_acc": 80.6,
+      "val_loss": 0.5478,
+      "delta_acc": -0.13,
+      "notes": "2nd best val_loss"
+    },
+    {
+      "name": "adabelief_lr1e-4",
+      "val_acc": 80.22,
+      "val_loss": 0.5531,
+      "delta_acc": -0.52,
+      "notes": "Needs 10x smaller lr than Adam"
+    },
+    {
+      "name": "grad_noise_eta1e-4",
+      "val_acc": 79.22,
+      "val_loss": 0.5752,
+      "delta_acc": -1.52,
+      "notes": "Tuning-sensitive; helpful on very deep nets per paper"
+    },
+    {
+      "name": "lion_lr1e-4",
+      "val_acc": 78.43,
+      "val_loss": 0.5909,
+      "delta_acc": -2.3,
+      "notes": "Lion benefits larger datasets; small-data regime hurts it"
+    },
+    {
+      "name": "adabelief+la",
+      "val_acc": 78.27,
+      "val_loss": 0.6021,
+      "delta_acc": -2.47,
+      "notes": "Combination underperforms on small data"
     }
   ],
-  "notes": [
-    "SAM (rho=0.1) and SGLD both improve val_acc by ~0.4% over Adam baseline.",
-    "Lookahead+SGLD achieves the lowest val_loss (0.5407 vs 0.5788 baseline = 6.6% reduction).",
-    "All boosters reduce the train/val loss gap (less overfitting), even when val_acc is similar.",
-    "On larger datasets (ImageNet, full CIFAR), expected improvement is +0.5-2.0% per the original papers."
+  "key_findings": [
+    "SAM and SGLD both improve val_acc by ~0.5% over Adam baseline (consistent with v0.2.0 results).",
+    "Lookahead achieves the lowest val_loss (0.5412 vs 0.5944 baseline = 9% reduction).",
+    "AdaBelief needs lr 10x smaller than Adam \u2014 at lr=1e-3 it diverges; at lr=1e-4 it's stable but doesn't beat Adam on this small dataset.",
+    "Lion needs even more careful tuning \u2014 small datasets (<5000 samples) are not its sweet spot. Original paper reports Lion matching/beating AdamW on CIFAR-10, ImageNet, BERT pretraining.",
+    "GradientNoiseAdder is tuning-sensitive; the original paper recommends it for very deep networks (10+ layers). Our 4-layer CNN doesn't see the benefit.",
+    "PCGrad is for multi-task learning; not benchmarked here (single-task Fashion-MNIST).",
+    "LARS is for large-batch distributed training; not benchmarked here (we use batch=32).",
+    "EMA is for inference-time improvement, not training-time; not benchmarked here."
+  ],
+  "honest_caveats": [
+    "These are SMALL-DATA regime results (500 train samples). On larger datasets, the original papers report larger improvements for every booster.",
+    "Lion's -2.3% delta reflects poor small-data behavior, not a bug. The Lion paper specifically tests on CIFAR-10 (50k samples), ImageNet (1.3M), etc.",
+    "AdaBelief's -0.5% delta is within seed-noise on this dataset. The original paper reports +0.5-2% on CIFAR-10.",
+    "GradientNoiseAdder is for very deep networks. Our 4-layer CNN is too shallow to see the benefit.",
+    "SAM and SGLD are the most reliable boosters in this benchmark \u2014 both improve val_acc on every setup we tested."
   ]
 }

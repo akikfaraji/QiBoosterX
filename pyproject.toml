@@ -4,13 +4,13 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "qiboosterx"
-version = "0.2.0"
-description = "Genuine training boosters for low-end devices: Lookahead, SAM, SGLD, SWA, mixed precision, gradient accumulation."
+version = "0.3.0"
+description = "Genuine training boosters for low-end devices: Lookahead, SAM, SGLD, AdaBelief, Lion, LARS, EMA, PCGrad, SWA, mixed precision, gradient accumulation."
 readme = "README.md"
 authors = [{name = "Akik Forazi", email = "akikforaziinchaos@gmail.com"}]
 license = {text = "MIT"}
 requires-python = ">=3.8"
-keywords = ["lookahead", "sam", "sgld", "swa", "mixed-precision", "gradient-accumulation", "training-boosters", "pytorch"]
+keywords = ["lookahead", "sam", "sgld", "adabelief", "lion", "lars", "ema", "pcgrad", "swa", "mixed-precision", "gradient-accumulation", "training-boosters", "pytorch"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",

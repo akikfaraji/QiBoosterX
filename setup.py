@@ -9,10 +9,10 @@ except FileNotFoundError:
 
 setup(
     name='qiboosterx',
-    version='0.2.0',
+    version='0.3.0',
     author='Akik Forazi',
     author_email='akikforaziinchaos@gmail.com',
-    description='Genuine training boosters for low-end devices: Lookahead, SAM, SGLD, SWA, mixed precision, gradient accumulation.',
+    description='Genuine training boosters for low-end devices: Lookahead, SAM, SGLD, AdaBelief, Lion, LARS, EMA, PCGrad, SWA, mixed precision, gradient accumulation.',
     long_description=long_description,
     long_description_content_type="text/markdown",
     url='https://github.com/Akik-Forazi/QiBoosterX',
@@ -35,7 +35,7 @@ setup(
         'Programming Language :: Python :: 3.12',
         'Operating System :: OS Independent',
     ],
-    keywords='lookahead sam sgld swa mixed-precision gradient-accumulation training-boosters pytorch',
+    keywords='lookahead sam sgld adabelief lion lars ema pcgrad swa mixed-precision gradient-accumulation training-boosters pytorch',
     packages=find_packages(exclude=['tests', 'benchmarks', 'examples']),
     python_requires='>=3.8',
     install_requires=[
