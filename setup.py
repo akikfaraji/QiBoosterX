@@ -1,47 +1,56 @@
 from setuptools import setup, find_packages
 
+# Read long_description from README.md
+try:
+    with open("README.md", encoding="utf-8") as f:
+        long_description = f.read()
+except FileNotFoundError:
+    long_description = "Genuine training boosters for low-end devices."
+
 setup(
     name='qiboosterx',
-    version='0.1.0',
+    version='0.2.0',
     author='Akik Forazi',
     author_email='akikforaziinchaos@gmail.com',
-    description='Quantum-inspired Super AI Booster for low-end devices.',
-    long_description="""
-QIBOOSTERX - Quantum-Inspired Booster for AI Projects.
-
-Developed as part of the QIST AI Project Family, specifically for the 'MINDWISE' prototype (QIST-NANO).
-Designed to empower low-end devices with highly efficient and scalable AI capabilities.
-Upcoming projects include QAIT - Quantum Artificial Intelligence Toolkit. Project will include QIST AI Model Family.
-Many more projects are in bound by me.
-
-Thank you for using QIBOOSTERX. — Akik Forazi
-    """,
+    description='Genuine training boosters for low-end devices: Lookahead, SAM, SGLD, SWA, mixed precision, gradient accumulation.',
+    long_description=long_description,
     long_description_content_type="text/markdown",
-    url_author_facebook="https://www.facebook.com/share/16BEFdtR3y/"
-    url='https://github.com/Akik-Forazi/QiBoosterX',  # You can update this when you have GitHub repo
+    url='https://github.com/Akik-Forazi/QiBoosterX',
     project_urls={
-        'Documentation': 'https://github.com/Akik-Forazi/QiBoosterX/wiki',
+        'Documentation': 'https://github.com/Akik-Forazi/QiBoosterX#readme',
         'Source': 'https://github.com/Akik-Forazi/QiBoosterX',
         'Bug Tracker': 'https://github.com/Akik-Forazi/QiBoosterX/issues',
     },
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
+        'Intended Audience :: Science/Research',
         'Topic :: Scientific/Engineering :: Artificial Intelligence',
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
+        'Programming Language :: Python :: 3.12',
         'Operating System :: OS Independent',
     ],
-    keywords='quantum AI, AI booster, low-end optimization, deep learning, efficient AI, quantum-inspired, qist, mindwise, qait',
-    packages=find_packages(),
-    python_requires='>=3.7',
+    keywords='lookahead sam sgld swa mixed-precision gradient-accumulation training-boosters pytorch',
+    packages=find_packages(exclude=['tests', 'benchmarks', 'examples']),
+    python_requires='>=3.8',
     install_requires=[
+        'torch>=1.10',
         'numpy',
-        'torch',
         'tqdm',
-        'rich',
     ],
+    extras_require={
+        'dev': ['pytest>=7.0', 'torchvision'],
+        'examples': ['torchvision'],
+    },
+    entry_points={
+        'console_scripts': [
+            'qiboostx=qiboosterx.cli:main',
+        ],
+    },
     include_package_data=True,
 )

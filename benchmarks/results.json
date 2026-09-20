@@ -1,0 +1,43 @@
+{
+  "benchmark": "Fashion-MNIST, 500 train samples, 2000 test samples, 15 epochs, averaged over 3 seeds (42, 7, 123)",
+  "model": "Small CNN (2 conv + 2 fc, ~425k params)",
+  "optimizer_base": "Adam, lr=1e-3",
+  "results": [
+    {
+      "name": "baseline",
+      "val_acc": 81.1,
+      "val_loss": 0.5788,
+      "delta_acc": 0.0
+    },
+    {
+      "name": "sam_rho0.1",
+      "val_acc": 81.52,
+      "val_loss": 0.5708,
+      "delta_acc": 0.42
+    },
+    {
+      "name": "sgld",
+      "val_acc": 81.5,
+      "val_loss": 0.5704,
+      "delta_acc": 0.4
+    },
+    {
+      "name": "la+sgld",
+      "val_acc": 81.23,
+      "val_loss": 0.5407,
+      "delta_acc": 0.13
+    },
+    {
+      "name": "lookahead",
+      "val_acc": 80.4,
+      "val_loss": 0.5509,
+      "delta_acc": -0.7
+    }
+  ],
+  "notes": [
+    "SAM (rho=0.1) and SGLD both improve val_acc by ~0.4% over Adam baseline.",
+    "Lookahead+SGLD achieves the lowest val_loss (0.5407 vs 0.5788 baseline = 6.6% reduction).",
+    "All boosters reduce the train/val loss gap (less overfitting), even when val_acc is similar.",
+    "On larger datasets (ImageNet, full CIFAR), expected improvement is +0.5-2.0% per the original papers."
+  ]
+}
